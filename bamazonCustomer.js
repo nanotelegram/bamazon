@@ -13,17 +13,20 @@ const connection = mysql.createConnection({
 });
 
 
-// This function displays products from the database  
+// This function displays products from the database and promts questions to customer
 const displayInventory = () => {
   console.log(`\n********** OUR INVENTORY **********\n`)
   connection.query("SELECT * FROM products", (err, res) => {
     if (err) throw err;
-    // display the content of the table called products
+    // display the content of the table named products
     console.table(res);
+    console.log('\n\n');
+    // ask customer to choose products 
+    customerPromts();
   });
 };
 
-// This function prompts questions for the customer 
+// This function prompts customers questions 
 const customerPromts = () => {
   inquirer
   .prompt([
@@ -31,7 +34,7 @@ const customerPromts = () => {
     {
       type: "number",
       name: "id",
-      message: "Select the id of the product you would like to purchase",
+      message: "Select the id of the product you would like to purchase ",
     }, {
       type: "number",
       name: "quantity",
@@ -41,12 +44,13 @@ const customerPromts = () => {
   ])
   .then(response => {
     // Use user feedback for... whatever!!
-    
-    console.log(response.id);
-    console.log(response.quantity);
+    // console.log(response.id);
+    // console.log(response.quantity);
+
 
   });
 }
+
 
 
 // RUNNING THE APP AFTER THIS LINE
