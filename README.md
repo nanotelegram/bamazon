@@ -16,8 +16,14 @@
 * NPM Packages: mysql, inquirer, dotenv
 
 ## Examples 
-* Example 1: When the customer's reponse is NO after being asked to shop with us
+* Example 1: When a customer asked to shop with us
 ![Example-1](/screenshots-examples/example-1.png)
+
+* Example 2: When customer's response is "NO"
+![Example-2](/screenshots-examples/example-2.png)
+
+* Example 3: When customer's response is "YES"
+![Example-3](/screenshots-examples/example-3.png)
     
 
 

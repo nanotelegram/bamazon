@@ -38,11 +38,13 @@ const displayInventory = () => {
           console.log(`\tWe will look forward to seeing you soon!\n`);
           return connection.end();
         } else {
-          console.log("Welcome to our store");
+          console.log("\tWelcome to our store!")
+          console.log("\tPlease select the product id and units you'd like purchase from our inventory");
         }
       });
   });
 };
+
 
 // RUN APP HERE 
 displayInventory();
