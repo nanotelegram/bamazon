@@ -17,7 +17,7 @@
 
 ## Examples 
     * Example 
-    ![Example 1.](/screenshots-examples/example-1)
+    ![Example 1.](/screenshots-examples/example-1.png)
 
 
     
