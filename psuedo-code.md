@@ -1,15 +1,18 @@
 Psuedo code 
-    a. ask for product id 
-        validate if the product exists
-            if the product doest not exist 
-                inform the user 
-                display the product table 
-            if the product does exist
-                let the user choose the product id 
-    b. ask for quanity of the chosen product           
-        validate if quantity/units available 
-            if product exist using its id 
-                ask for quantity 
-                    if quantity 0 or greater then inventory 
-                        inform the user
-                        display the product table 
+1. display inventory
+    ask the user about shopping with us.
+        if yes, start shopping
+        if no, exit the database
+
+2. start shopping
+    create a connection to the database 
+    ask the user to choose the product item from the invenstory
+        validate if the item id is available in the inventory
+    ask the user to choose quantiy to buy 
+        validate if the quanity is availe in the inventory
+
+3. if the user selected the right product item id and quantity 
+    purchase 
+
+
+
