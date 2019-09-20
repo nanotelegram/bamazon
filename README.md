@@ -16,8 +16,8 @@
 * NPM Packages: mysql, inquirer, dotenv
 
 ## Examples 
-    * Example 1
-    ![spotify-this](/screenshots-examples/example-1.png)
+* Example 1
+![Example-1](/screenshots-examples/example-1.png)
     
 
 
