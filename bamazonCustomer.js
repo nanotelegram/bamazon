@@ -39,7 +39,7 @@ const displayInventory = () => {
           console.log(`\tWe will look forward to seeing you soon!\n`);
           return connection.end();
         } else {
-          console.log("\tWelcome to our store!");
+          console.log("\tWelcome to BAMAZON!");
           return shop();
         }
       });

@@ -24,6 +24,10 @@
 
 * Example 3: When customer's response is "YES"
 ![Example-3](/screenshots-examples/example-3.png)
+
+* Example 3: When customer selects and buy a product
+![Example-3](/screenshots-examples/example-4.png)
+    
     
 
 
