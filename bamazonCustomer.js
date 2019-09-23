@@ -11,17 +11,6 @@ const connection = mysql.createConnection({
   database: process.env.DB_NAME
 });
 
-const checkInventory = (id, quantity) => {
-  connection.query("SELECT * FROM products", (err, res) => {
-    if (err) throw err;
-    console.log(`\tYour Produc ID ${id}`);
-    console.log(`\tYour Procut Quantity ${quantity}`); 
-    if (id <= 0) {
-      console.log("Invalid Id. Select a valid id");
-      return shop();
-    }
-  });
-}
 
 // This function displays products from the database and promt customer to shop with us
 const displayInventory = () => {
@@ -57,6 +46,40 @@ const displayInventory = () => {
   });
 };
 
+const checkInventory = (id, quantity) => {
+  connection.query("SELECT * FROM products", (err, res) => {
+    if (err) throw err;
+    // console.log(`\tYour Produc ID ${id}`);
+    // console.log(`\tYour Procut Quantity ${quantity}`);
+    // // validate user's inputs  
+    // if (id <= 0) {
+    //   console.log("\tInvalid Id. Select a valid id");
+    //   return shop();
+    // } if (id = "NaN") {
+    //   console.log(`\tInvalid input. ID cannot be left empty`);
+    //   return shop();
+    // }
+
+    for (let i = 0; i < res.length; i++) {
+      let productID = res[i].item_id;
+      let productQunatity = res[i].stock_quantity;
+      let producName = res[i].product_name;
+      let productPrice = res[i].price;
+      let total = quantity * productPrice;
+      if (id == productID ) {
+        console.log(`\tSelected item id: ${id}`);
+        console.log(`\tSelected quanity: ${quantity}`);
+
+        console.log(`\tProduct name: ${producName}`);
+        console.log(`\tUnits avialable: ${productQunatity}`)
+        console.log(`\tPrice per unit: ${productPrice}`);
+        console.log(`\tYour total is: $${total} `)
+      }
+    }
+    updateInventory(id, quantity);
+  });
+}
+
 // This function takes order from the customer
 const shop = () => {
   inquirer
@@ -79,9 +102,12 @@ const shop = () => {
       var selectedItemID = parseInt(answers.id);
       var selectedQuantity = parseInt(answers.quantity);
       checkInventory(selectedItemID, selectedQuantity);
-
     });
 };
+
+const updateInventory = (updateID, updateQuantity) => {
+  console.log(`Inventory updated`);
+}
 
 // RUN APP HERE
 displayInventory();
