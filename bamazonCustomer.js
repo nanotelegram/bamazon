@@ -11,6 +11,18 @@ const connection = mysql.createConnection({
   database: process.env.DB_NAME
 });
 
+const checkInventory = (id, quantity) => {
+  connection.query("SELECT * FROM products", (err, res) => {
+    if (err) throw err;
+    console.log(`\tYour Produc ID ${id}`);
+    console.log(`\tYour Procut Quantity ${quantity}`); 
+    if (id <= 0) {
+      console.log("Invalid Id. Select a valid id");
+      return shop();
+    }
+  });
+}
+
 // This function displays products from the database and promt customer to shop with us
 const displayInventory = () => {
   console.log(`\n********** SELECT FROM OUR INVENTORY **********\n`);
@@ -47,49 +59,28 @@ const displayInventory = () => {
 
 // This function takes order from the customer
 const shop = () => {
-  connection.query("SELECT * FROM products", (err, res) => {
-    if (err) throw err;
+  inquirer
+    .prompt([
+      /* Pass your questions in here */
+      {
+        type: "number",
+        name: "id",
+        filter: Number,
+        message: "Select the id of the product you would like to purchase"
+      },
+      {
+        type: "number",
+        name: "quantity",
+        filter: Number,
+        message: "Select the quantiy of the product you would like to purchase"
+      }
+    ])
+    .then(answers => {
+      var selectedItemID = parseInt(answers.id);
+      var selectedQuantity = parseInt(answers.quantity);
+      checkInventory(selectedItemID, selectedQuantity);
 
-    // response from the database and quering the user
-    inquirer
-      .prompt([
-        /* Pass your questions in here */
-        {
-          type: "number",
-          name: "id",
-          message: "Select the id of the product you would like to purchase",
-          validate: function (value) {
-            for (let i = 0; i < res.length; i++) {
-                if (value == res[i].item_id) {
-
-                    return true;
-                }
-            }
-            console.log(`\nPlease enter a valid id`)
-            return false;
-
-        }
-        },
-        {
-          type: "number",
-          name: "quantity",
-          message:
-            "Select the quantiy of the product you would like to purchase", 
-            validate: function (value) {
-              if (isNaN(value) || (value<1)) {
-                  console.log(`\nPlease enter a valid number!`)
-                  return false;
-              }
-              return true;
-          }
-        }
-      ])
-      .then(answers => {
-        // Use user feedback for... whatever!!
-        // var selectedItemID = answers.id;
-        // var selectedQuantity = answers.quantity;
-      });
-  });
+    });
 };
 
 // RUN APP HERE
