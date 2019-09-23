@@ -27,24 +27,70 @@ const displayInventory = () => {
           type: "list",
           name: "answer",
           message: "Would you like to shop with Us Today?",
-          choices: ['YES', 'NO']
+          choices: ["YES", "NO"]
         }
       ])
       .then(response => {
         let selectedAnswer = response.answer;
-        if (selectedAnswer != 'YES') {
+        if (selectedAnswer != "YES") {
           console.log(`\tYour answer is ${selectedAnswer}`);
           console.log(`\tThen we wish you a wonderful day`);
           console.log(`\tWe will look forward to seeing you soon!\n`);
           return connection.end();
         } else {
-          console.log("\tWelcome to our store!")
-          console.log("\tPlease select the product id and units you'd like purchase from our inventory");
+          console.log("\tWelcome to our store!");
+          return shop();
         }
       });
   });
 };
 
+// This function takes order from the customer
+const shop = () => {
+  connection.query("SELECT * FROM products", (err, res) => {
+    if (err) throw err;
 
-// RUN APP HERE 
+    // response from the database and quering the user
+    inquirer
+      .prompt([
+        /* Pass your questions in here */
+        {
+          type: "number",
+          name: "id",
+          message: "Select the id of the product you would like to purchase",
+          validate: function (value) {
+            for (let i = 0; i < res.length; i++) {
+                if (value == res[i].item_id) {
+
+                    return true;
+                }
+            }
+            console.log(`\nPlease enter a valid id`)
+            return false;
+
+        }
+        },
+        {
+          type: "number",
+          name: "quantity",
+          message:
+            "Select the quantiy of the product you would like to purchase", 
+            validate: function (value) {
+              if (isNaN(value) || (value<1)) {
+                  console.log(`\nPlease enter a valid number!`)
+                  return false;
+              }
+              return true;
+          }
+        }
+      ])
+      .then(answers => {
+        // Use user feedback for... whatever!!
+        // var selectedItemID = answers.id;
+        // var selectedQuantity = answers.quantity;
+      });
+  });
+};
+
+// RUN APP HERE
 displayInventory();

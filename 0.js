@@ -11,78 +11,73 @@ const connection = mysql.createConnection({
   database: process.env.DB_NAME
 });
 
-// This function displays products from the database and connection 
+const checkInventory = (id, quantity) => {
+  connection.query("SELECT * FROM products", (err, res) => {
+    if (err) throw err;
+    console.log(`Your ID ${id}`);
+    console.log(`Your Quantity ${quantity}`); 
+  });
+}
+
+// This function displays products from the database and promt customer to shop with us
 const displayInventory = () => {
   console.log(`\n********** SELECT FROM OUR INVENTORY **********\n`);
   connection.query("SELECT * FROM products", (err, res) => {
     if (err) throw err;
     // display the content of the table named products
     console.table(res);
-    console.log("\n\n");
+    console.log("\n");
 
-    // end connection after display the product 
-    connection.end();
+    // protm the user about shopping with us
+    inquirer
+      .prompt([
+        {
+          type: "list",
+          name: "answer",
+          message: "Would you like to shop with Us Today?",
+          choices: ["YES", "NO"]
+        }
+      ])
+      .then(response => {
+        let selectedAnswer = response.answer;
+        if (selectedAnswer != "YES") {
+          console.log(`\tYour answer is ${selectedAnswer}`);
+          console.log(`\tThen we wish you a wonderful day`);
+          console.log(`\tWe will look forward to seeing you soon!\n`);
+          return connection.end();
+        } else {
+          console.log("\tWelcome to our store!");
+          return shop();
+        }
+      });
   });
 };
 
-const customerPromts = () => {
+// This function takes order from the customer
+const shop = () => {
   inquirer
     .prompt([
       /* Pass your questions in here */
       {
         type: "number",
         name: "id",
-        message: "Select the id of the product you would like to purchase ",
-        filter: Number
+        filter: Number,
+        message: "Select the id of the product you would like to purchase"
       },
       {
         type: "number",
         name: "quantity",
-        message: "Select the quantiy of the product you would like to purchase",
-        filter: Number
+        filter: Number,
+        message: "Select the quantiy of the product you would like to purchase"
       }
     ])
-    .then(response => {
-      // Use user feedback for... whatever!!
-      // console.log(response.id);
-      // console.log(response.quantity);
-      let selectedItemID = response.id;
-      let selectedQuantity = response.quantity;
-
-      connection.query("SELECT * FROM products", (err, res) => {
-        if (err) throw err;
-        // display the content of the table named products
-        for (let i = 0; i < res.length; i++) {
-          console.log(res[i].item_id);
-        }
-      });
-
-
-      // if (selectedItemID <= 0 || selectedItemID == "") {
-      //   console.log("\n>>> Invalid input! Item number must be greater than 0 <<<\n");
-      //   return customerPromts();
-      // } else if (selectedQuantity <= 0 || selectedQuantity == "") {
-      //   console.log("\n>>> Invalid input! Quantity must be greater than 0 <<<\n");
-      //   return customerPromts();
-      // } 
-      
-      // for (let i = 0; i< response.length; i++ ) {
-      //   if (selectedItemID == response[i].item_id && selectedQuantity <= response.length) {
-      //     return true;
-      //   } else {
-      //    console.log(`Invalid input. Please Try again`)
-      //   }
-      // }
-
- 
+    .then(answers => {
+      var selectedItemID = parseInt(answers.id);
+      var selectedQuantity = parseInt(answers.quantity);
+      checkInventory(selectedItemID, selectedQuantity);
 
     });
 };
 
-const checkingInventory = () => {
-    
-}
-
 // RUN APP HERE
 displayInventory();
-customerPromts();
