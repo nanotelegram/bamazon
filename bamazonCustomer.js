@@ -77,6 +77,7 @@ const checkInventory = (id, quantity) => {
       }
     }
     updateInventory(id, quantity);
+    goodByeMessage();
   });
 }
 
@@ -107,6 +108,13 @@ const shop = () => {
 
 const updateInventory = (updateID, updateQuantity) => {
   console.log(`Inventory updated`);
+  connection.end();
+}
+
+const goodByeMessage = () => {
+  console.log(`\tThank you for shopping with Us`);
+  console.log(`\tHave a wonderfull day!`);
+  console.log(`\tWe will look forward to see you soon`);
 }
 
 // RUN APP HERE
